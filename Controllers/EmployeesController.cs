@@ -31,6 +31,16 @@ namespace LearningManagementSystem.Controllers
             //_employeesViewModel.listemployees = await _context.Employees.ToListAsync();
             // return View(_employeesViewModel);
         }
+        public async Task<IActionResult> AuditIndex()
+        {
+            var s = await _context.Employees.Where(m=>m.Enterd==true&&m.Audited==null).Include(c => c.Rank).Include(x => x.JopTypeNavigation).ToListAsync();
+            return _context.Employees != null ?
+                          View(await _context.Employees.ToListAsync()) :
+                          Problem("Entity set 'Teat2Context.employees'  is null.");
+            //_employeesViewModel.listemployees = await _context.Employees.ToListAsync();
+            // return View(_employeesViewModel);
+        }
+
 
         // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -76,7 +86,7 @@ namespace LearningManagementSystem.Controllers
                 //e.Gender= (int)employee.GenderType;
                 //e.JopType = employee.jobId;
                 //e.RankId = employee.RankId;
-
+                employee.Enterd = true;
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

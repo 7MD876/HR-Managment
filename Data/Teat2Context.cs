@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using LearningManagementSystem.Models;
 
 namespace LearningManagementSystem.Data;
 
@@ -66,7 +65,7 @@ public partial class Teat2Context : DbContext
 
             entity.Property(e => e.Id).ValueGeneratedNever();
 
-            entity.HasOne(d => d.ParentMenu).WithMany(p => p.InverseParentMenu).HasForeignKey(d => d.ParentMenuId).IsRequired(false);
+            entity.HasOne(d => d.ParentMenu).WithMany(p => p.InverseParentMenu).HasForeignKey(d => d.ParentMenuId);
         });
 
         modelBuilder.Entity<AspNetRole>(entity =>
@@ -82,6 +81,8 @@ public partial class Teat2Context : DbContext
         modelBuilder.Entity<AspNetRoleClaim>(entity =>
         {
             entity.HasIndex(e => e.RoleId, "IX_AspNetRoleClaims_RoleId");
+
+            entity.Property(e => e.RoleId).IsRequired();
 
             entity.HasOne(d => d.Role).WithMany(p => p.AspNetRoleClaims).HasForeignKey(d => d.RoleId);
         });
@@ -129,6 +130,8 @@ public partial class Teat2Context : DbContext
         {
             entity.HasIndex(e => e.UserId, "IX_AspNetUserClaims_UserId");
 
+            entity.Property(e => e.UserId).IsRequired();
+
             entity.HasOne(d => d.User).WithMany(p => p.AspNetUserClaims).HasForeignKey(d => d.UserId);
         });
 
@@ -140,6 +143,7 @@ public partial class Teat2Context : DbContext
 
             entity.Property(e => e.LoginProvider).HasMaxLength(128);
             entity.Property(e => e.ProviderKey).HasMaxLength(128);
+            entity.Property(e => e.UserId).IsRequired();
 
             entity.HasOne(d => d.User).WithMany(p => p.AspNetUserLogins).HasForeignKey(d => d.UserId);
         });
@@ -159,6 +163,7 @@ public partial class Teat2Context : DbContext
             entity.ToTable("Course");
 
             entity.Property(e => e.CourseId).HasColumnName("CourseID");
+            entity.Property(e => e.CourseName).IsRequired();
         });
 
         modelBuilder.Entity<ECourse>(entity =>
@@ -172,6 +177,7 @@ public partial class Teat2Context : DbContext
             entity.Property(e => e.EndDate).HasColumnType("date");
             entity.Property(e => e.Idemployees).HasColumnName("IDEmployees");
             entity.Property(e => e.Rating)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("rating");
             entity.Property(e => e.StartDate).HasColumnType("date");
@@ -258,8 +264,10 @@ public partial class Teat2Context : DbContext
             entity.ToTable("employees");
 
             entity.Property(e => e.Employeenumber).HasColumnName("EMPLOYEENUMBER");
+            entity.Property(e => e.Enterd).HasColumnName("enterd");
             entity.Property(e => e.Identitynumber).HasColumnName("IDENTITYNUMBER");
             entity.Property(e => e.Name)
+                .IsRequired()
                 .HasMaxLength(100)
                 .HasColumnName("name");
             entity.Property(e => e.RankId).HasColumnName("RankID");
@@ -280,6 +288,7 @@ public partial class Teat2Context : DbContext
             entity.HasKey(e => e.Idjops);
 
             entity.Property(e => e.Idjops).HasColumnName("IDJops");
+            entity.Property(e => e.JopName).IsRequired();
         });
 
         modelBuilder.Entity<Medel>(entity =>
@@ -287,7 +296,9 @@ public partial class Teat2Context : DbContext
             entity.HasKey(e => e.Idmedels);
 
             entity.Property(e => e.Idmedels).HasColumnName("IDMedels");
-            entity.Property(e => e.MedelsName).HasMaxLength(50);
+            entity.Property(e => e.MedelsName)
+                .IsRequired()
+                .HasMaxLength(50);
         });
 
         modelBuilder.Entity<Rank>(entity =>
@@ -297,7 +308,9 @@ public partial class Teat2Context : DbContext
             entity.ToTable("Rank");
 
             entity.Property(e => e.Idrank).HasColumnName("IDRank");
-            entity.Property(e => e.Rankname).HasMaxLength(50);
+            entity.Property(e => e.Rankname)
+                .IsRequired()
+                .HasMaxLength(50);
         });
 
         modelBuilder.Entity<Tranfer>(entity =>
@@ -307,12 +320,13 @@ public partial class Teat2Context : DbContext
             entity.ToTable("Tranfer");
 
             entity.Property(e => e.TransferId).HasColumnName("transferID");
-            entity.Property(e => e.TransferName).HasMaxLength(50);
+            entity.Property(e => e.TransferName)
+                .IsRequired()
+                .HasMaxLength(50);
         });
 
         OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
 }

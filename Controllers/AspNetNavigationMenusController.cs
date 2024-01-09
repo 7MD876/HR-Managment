@@ -107,7 +107,7 @@ namespace LearningManagementSystem.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AspNetNavigationMenuExists(aspNetNavigationMenu.Id.Value))
+                    if (!AspNetNavigationMenuExists(aspNetNavigationMenu.Id))
                     {
                         return NotFound();
                     }

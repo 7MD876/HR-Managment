@@ -13,7 +13,7 @@ public partial class EMedel
 
     public int Idemployees { get; set; }
 
-    public virtual Employee IdemployeesNavigation { get; set; } = null!;
+    public virtual Employee IdemployeesNavigation { get; set; }
 
-    public virtual Medel Medals { get; set; } = null!;
+    public virtual Medel Medals { get; set; }
 }

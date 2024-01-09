@@ -13,7 +13,7 @@ public partial class ETransfer
 
     public DateTime TransferDate { get; set; }
 
-    public virtual Employee IdEmployeesNavigation { get; set; } = null!;
+    public virtual Employee IdEmployeesNavigation { get; set; }
 
-    public virtual Tranfer IdTransferNavigation { get; set; } = null!;
+    public virtual Tranfer IdTransferNavigation { get; set; }
 }

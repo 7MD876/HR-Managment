@@ -68,9 +68,13 @@
                 @Html.DisplayFor(modelItem => item.Rank.Rankname)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdEmployees">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdEmployees">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdEmployees">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.IdEmployees">تعديل</a> |
+                <a asp-action="Details" asp-route-id="@item.IdEmployees">عرض</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdEmployees">حذف</a> |
+                <a asp-controller="ECourses" asp-action="Create" asp-route-id="@item.IdEmployees">اضافة دورة</a> |
+                <a asp-controller="EMedels" asp-action="Create" asp-route-id="@item.IdEmployees">اضافة نوط</a> |
+                <a asp-controller="ETransfers" asp-action="Create" asp-route-id="@item.IdEmployees">اضافة تنقل</a> 
+                    
             </td>
         </tr>
 }

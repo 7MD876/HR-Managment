@@ -7,7 +7,7 @@ public partial class Jop
 {
     public int Idjops { get; set; }
 
-    public string JopName { get; set; } = null!;
+    public string JopName { get; set; }
 
     public virtual ICollection<EJob> EJobs { get; set; } = new List<EJob>();
 

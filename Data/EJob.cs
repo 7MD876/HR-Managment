@@ -11,7 +11,7 @@ public partial class EJob
 
     public int JobId { get; set; }
 
-    public virtual Employee Employee { get; set; } = null!;
+    public virtual Employee Employee { get; set; }
 
-    public virtual Jop Job { get; set; } = null!;
+    public virtual Jop Job { get; set; }
 }

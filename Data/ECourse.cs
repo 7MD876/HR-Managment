@@ -15,9 +15,9 @@ public partial class ECourse
 
     public DateTime EndDate { get; set; }
 
-    public string Rating { get; set; } = null!;
+    public string Rating { get; set; }
 
-    public virtual Course Course { get; set; } = null!;
+    public virtual Course Course { get; set; }
 
-    public virtual Employee IdemployeesNavigation { get; set; } = null!;
+    public virtual Employee IdemployeesNavigation { get; set; }
 }

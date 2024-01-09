@@ -9,7 +9,7 @@ public partial class Course
 
     public int CourseNumber { get; set; }
 
-    public string CourseName { get; set; } = null!;
+    public string CourseName { get; set; }
 
     public virtual ICollection<ECourse> ECourses { get; set; } = new List<ECourse>();
 }

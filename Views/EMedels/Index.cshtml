@@ -1,0 +1,47 @@
+﻿@model IEnumerable<LearningManagementSystem.Data.EMedel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateMedals)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdemployeesNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Medals)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateMedals)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdemployeesNavigation.IdEmployees)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Medals.Idmedels)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdeMedals">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdeMedals">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdeMedals">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
