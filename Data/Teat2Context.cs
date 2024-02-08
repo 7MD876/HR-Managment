@@ -251,7 +251,7 @@ public partial class Teat2Context : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Transfer_employees");
 
-            entity.HasOne(d => d.IdTransferNavigation).WithOne(p => p.ETransfer)
+            entity.HasOne(d => d.Units).WithMany(p => p.ETransfers)
                 .HasForeignKey<ETransfer>(d => d.IdTransfer)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_E_Transfer_Tranfer");

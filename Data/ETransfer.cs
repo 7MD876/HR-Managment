@@ -15,5 +15,5 @@ public partial class ETransfer
 
     public virtual Employee IdEmployeesNavigation { get; set; }
 
-    public virtual Tranfer IdTransferNavigation { get; set; }
+    
 }
