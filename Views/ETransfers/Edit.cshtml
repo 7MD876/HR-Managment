@@ -4,41 +4,69 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h4>تعديل تنقل لـ @Html.Raw(ViewBag.EmployeeName)</h4>
 
-<h4>ETransfer</h4>
+<script src="~/js/jquery.slim.min.js"></script>
+<script src="~/js/popper.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="~/js/moment.min.js"></script>
+
+<link href="~/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<link href="~/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+<script src="~/js/bootstrap-hijri-datepicker.min.js"></script>
+<script src="~/js/bootstrap-hijri-datepicker.js"></script>
+<script src="~/js/bootstrap-hijri-datetimepicker.min.js"></script>
+<script src="~/js/bootstrap-hijri-datetimepicker.js"></script>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+       <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                TempData["idEmp"] = ViewBag.id;
+            }
+           @Html.HiddenFor(m=>m.IdEmployeesNavigation)
             <input type="hidden" asp-for="IdTransfer" />
+            <input type="hidden" asp-for="IdEmployees" />
             <div class="form-group">
-                <label asp-for="TransferId" class="control-label"></label>
-                <input asp-for="TransferId" class="form-control" />
-                <span asp-validation-for="TransferId" class="text-danger"></span>
+                <label class="control-label"> نوع التنقل</label>
+                <select asp-for="TransferId" class="form-control" asp-items="ViewBag.IdTransfer">
+                    <option>اختر واحد</option>
+                </select>
             </div>
+
             <div class="form-group">
-                <label asp-for="IdEmployees" class="control-label"></label>
-                <select asp-for="IdEmployees" class="form-control" asp-items="ViewBag.IdEmployees"></select>
-                <span asp-validation-for="IdEmployees" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TransferDate" class="control-label"></label>
-                <input asp-for="TransferDate" class="form-control" />
+                <label class="control-label">تاريخ التنقل</label>
+                <input asp-for="TransferDate" class="form-control hijri-date-input" />
                 <span asp-validation-for="TransferDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <label class="control-label">الوحده المنقول منها</label>
+                <select asp-for="FromUnit" class="form-control" asp-items="ViewBag.FromUnit">
+                    <option>اختر واحد</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">الوحده المنقول إليها</label>
+                <select asp-for="ToUnit" class="form-control" asp-items="ViewBag.ToUnit">
+                    <option>اختر واحد</option>
+                </select>
+            </div>
+           
+             <div class="form-group">
+             <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
-    </div>
-</div>
+        </div>
+        </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Employees" asp-action="Details" asp-route-id="@Model.IdEmployees"><i class="bx bx-detail"></i>العودة لبيانات الموظف</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<script type="text/javascript">
+    $(".hijri-date-input").hijriDatePicker();
+</script>

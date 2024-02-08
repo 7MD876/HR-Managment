@@ -1,0 +1,165 @@
+﻿@using LearningManagementSystem.Enums
+@model LearningManagementSystem.Data.Employee
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>تفاصيل بيانات الموظف</h1>
+<hr />
+<div>
+    <h3>البيانات الاساسية</h3>
+    <dl class="row">
+        <dt class="col-sm-2">
+            اسم الموظف
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            رقم الهوية
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Identitynumber)
+        </dd>
+        <dt class="col-sm-2">
+            الرقم الوظيفي
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Employeenumber)
+        </dd>
+        <dt class="col-sm-2">
+            الجنس
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                if (Model.Gender == 1)
+                {
+                    var description = Gender.male.GetDisplayName();
+                    @Html.DisplayFor(s => description)
+                }
+                else
+                {
+                    var description = Gender.female.GetDisplayName();
+                    @Html.DisplayFor(s => description)
+                }
+            }
+        </dd>
+        <dt class="col-sm-2">
+            مسمى الوظيفة
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.JopTypeNavigation.JopName)
+        </dd>
+        <dt class="col-sm-2">
+            الرتبة
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Rank.Rankname)
+        </dd>
+    </dl>
+    <h3>بيانات الدورات</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>اسم الدورة</th>
+                <th>تاريخ بداية الدورة</th>
+                <th>تاريخ نهاية الدورة</th>
+                <th>التقييم</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ECourses)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course.CourseName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfStart)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfEnd)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rating)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h3>بيانات التنقلات</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>نوع التنقل</th>
+                <th>تاريخ التنقل</th>
+                <th>من الوحدة</th>
+                <th>الى الوحدة</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ETransfers)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Transfer.TransferName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransferDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FromUnitNavigation.UnitName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ToUnitNavigation.UnitName)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <h3>بيانات الانواط</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    النوع
+                </th>
+                <th>
+                    تاريخ الوسام أو النوط
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.EMedels)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Medals.MedelsName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateMedals)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    @* <input type="submit" value="ارسال" onclick="n('@Model.IdEmployees')" class="btn btn-primary"style=" background: green;"/> *@
+    @{
+        if (User.IsInRole("Employee"))
+        {
+            <a asp-action="Index">العودة لقائمة الموظفين</a>
+        }
+        else if (User.IsInRole("المدقق"))
+        {
+            <a asp-action="AuditIndex">العودة لقائمة الموظفين</a>
+        }
+        else
+        {
+            <a asp-action="ApproveIndex">العودة لقائمة الموظفين</a>
+        }
+    }
+</div>

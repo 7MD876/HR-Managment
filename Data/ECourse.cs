@@ -11,11 +11,15 @@ public partial class ECourse
 
     public int CourseId { get; set; }
 
-    public DateTime StartDate { get; set; }
+    public DateTime? StartDate { get; set; }
 
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
     public string Rating { get; set; }
+
+    public string DateOfStart { get; set; }
+
+    public string DateOfEnd { get; set; }
 
     public virtual Course Course { get; set; }
 

@@ -5,26 +5,26 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h4>اضافة موظف</h4>
 
-<h4>Employee</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label  class="control-label">الاسم</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Identitynumber" class="control-label"></label>
+                <label  class="control-label">رقم الهوية</label>
                 <input asp-for="Identitynumber" class="form-control" />
                 <span asp-validation-for="Identitynumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Employeenumber" class="control-label"></label>
+                <label  class="control-label">الرقم الوظيفي</label>
                 <input asp-for="Employeenumber" class="form-control" />
                 <span asp-validation-for="Employeenumber" class="text-danger"></span>
             </div>
@@ -36,26 +36,33 @@
                 
             </div>
             <div class="form-group">
+                <label class="control-label">الوظيفة</label>
+                <select asp-for="Category" class="form-control" asp-items="Html.GetEnumSelectList<category>()">
+                    <option>اختر واحد </option>
+                </select>
+
+            </div>
+            @* <div class="form-group">
                 <label asp-for="JopType" class="control-label"></label>
                 <select asp-for="JopType" class="form-control" asp-items="ViewBag.JopType">
                     <option>اختر واحد</option>
                 </select>
-            </div>
+            </div> *@
             <div class="form-group">
-                <label asp-for="RankId" class="control-label"></label>
+                <label  class="control-label">الرتبة / المرتبة</label>
                 <select asp-for="RankId" class ="form-control" asp-items="ViewBag.RankId">
                     <option>اختر واحد</option>
                 </select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="اضافة" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index"><i class=" bx bx-detail"> </i> العودة لقائمة الموظقين</a>
 </div>
 
 @section Scripts {

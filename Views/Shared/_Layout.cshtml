@@ -7,16 +7,21 @@
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="~/css/site.css" />
 	<link rel="" />
-	<script src="~/node_modules/jquery/dist/jquery.js"></script>
-	<script src="~/node_modules/jquery/dist/jquery.min.js"></script>
-	<script src="~/node_modules/jquery/dist/jquery.slim.js"></script>
-	<script src="~/node_modules/jquery/dist/jquery.slim.min.js"></script>
-	<script src="~/node_modules/sweetalert2/dist/sweetalert2"></script>
-	<script src="~/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
-	<script src="~/node_modules/sweetalert2/dist/sweetalert2.js"></script>
-	<script src="~/node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
-	<link href="~/node_modules/sweetalert2/dist/sweetalert2.css" rel="stylesheet" />
-	<link href="~/node_modules/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet" />
+	<script src="~/js/jquery.js"></script>
+	<script src="~/js/jquery.min.js"></script>
+	<script src="~/js/jquery.slim.js"></script>
+	<script src="~/js/jquery.slim.min.js"></script>
+	<script src="~/js/sweetalert2.all.js"></script>
+	<script src="~/js/sweetalert2.all.min.js"></script>
+	<script src="~/js/sweetalert2.js"></script>
+	<script src="~/js/sweetalert2.min.js"></script>
+	<link href="~/css/sweetalert2.css" rel="stylesheet" />
+	<link href="~/css/sweetalert2.min.css" rel="stylesheet" />
+	<link href="~/fonts/fonts.css" rel="stylesheet" />
+	<link href="~/css/jquery.datatables.min.css" rel="stylesheet" />
+
+	<script src="~/js/jquery.datatables.min.js"></script>
+
 	<style>
 		input[type=checkbox] {
 			-ms-transform: scale(2);
@@ -30,20 +35,20 @@
 </head>
 <body>
 	<header>
-		<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+
+		
 			@await Component.InvokeAsync("NavigationMenu")
-		</nav>
 	</header>
 	<br />
 	<br />
-	<div style="margin-top: 50px;" class="container">
+	<div style="margin-top: 50px;margin-bottom:150px;margin-right: 250px;" class="container">
 		<main role="main" class="pb-3">
 			@RenderBody()
 		</main>
 	</div>
 	<footer class="border-top footer text-muted">
 		<div class="container">
-			&copy; 2020 - Dynamic Role Authorization - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+			كافة الحقوق محفوظة @System.DateTime.Today.Year  <a asp-area="" asp-controller="" asp-action=""></a>
 		</div>
 	</footer>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>

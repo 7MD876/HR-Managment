@@ -4,20 +4,20 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>التفاصيل</h1>
 
 <div>
-    <h4>ETransfer</h4>
+    
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TransferId)
+            الوحده المنقول منها
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TransferId)
+            @Html.DisplayFor(model => model.FromUnit)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TransferDate)
+           تاريخ التنقل
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.TransferDate)
@@ -29,14 +29,15 @@
             @Html.DisplayFor(model => model.IdEmployeesNavigation.IdEmployees)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdTransferNavigation)
+            التنقل
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdTransferNavigation.TransferId)
+            @Html.DisplayFor(model => model.Transfer)
         </dd>
     </dl>
 </div>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.IdTransfer">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Employees" asp-action="Details" asp-route-id="@Model.IdEmployees"><i class="bx bx-detail"></i>العودة لبيانات الموظف</a>
 </div>

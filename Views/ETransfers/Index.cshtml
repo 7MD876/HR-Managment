@@ -7,22 +7,25 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+   @*  <a asp-action="Create">Create New</a> *@
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TransferId)
+                نوع التنقل
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TransferDate)
+                تاريخ التنقل
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdEmployeesNavigation)
+                الموظف
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdTransferNavigation)
+               من
+            </th>
+            <th>
+                الى
             </th>
             <th></th>
         </tr>
@@ -31,17 +34,20 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.TransferId)
+                @Html.DisplayFor(modelItem => item.Transfer.TransferName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TransferDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdEmployeesNavigation.IdEmployees)
+                @Html.DisplayFor(modelItem => item.IdEmployeesNavigation.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdTransferNavigation.TransferId)
+                    @Html.DisplayFor(modelItem => item.FromUnitNavigation.UnitName)
             </td>
+         <td>
+                    @Html.DisplayFor(modelItem => item.ToUnitNavigation.UnitName)
+         </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdTransfer">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.IdTransfer">Details</a> |

@@ -5,27 +5,30 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h3>تعديل بيانات الموظف</h3>
 
-<h4>Employee</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="IdEmployees" />
+            <input type="hidden" asp-for="Enterd" />
+            <input type="hidden" asp-for="Approved" />
+            <input type="hidden" asp-for="Audited" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label  class="control-label">الاسم</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Identitynumber" class="control-label"></label>
+                <label  class="control-label">رقم الهوية</label>
                 <input asp-for="Identitynumber" class="form-control" />
                 <span asp-validation-for="Identitynumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Employeenumber" class="control-label"></label>
+                <label  class="control-label">الرقم الوظيفي</label>
                 <input asp-for="Employeenumber" class="form-control" />
                 <span asp-validation-for="Employeenumber" class="text-danger"></span>
             </div>
@@ -36,25 +39,39 @@
                 </select>
 
             </div>
-            <div class="form-group">
+            @* <div class="form-group">
                 <label asp-for="JopType" class="control-label"></label>
                 <select asp-for="JopType" class="form-control" asp-items="ViewBag.JopType"></select>
                 <span asp-validation-for="JopType" class="text-danger"></span>
-            </div>
+            </div> *@
             <div class="form-group">
-                <label asp-for="RankId" class="control-label"></label>
+                <label  class="control-label">الرتبة</label>
                 <select asp-for="RankId" class="form-control" asp-items="ViewBag.RankId"></select>
                 <span asp-validation-for="RankId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="حفظ" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    @* <a asp-controller="Employees" asp-action="Index">العودة لقائمة الموظفين</a> *@
+    @{
+        if (Model.Enterd != true && Model.Audited != true && Model.Approved != true)
+        {
+            <a asp-action="Index"><i class="bx bx-detail"></i> العودة لقائمة الموظفين</a>
+        }
+        else if (Model.Enterd == true && Model.Audited != true && Model.Approved != true)
+        {
+            <a asp-action="AuditIndex"><i class="bx bx-detail"></i>العودة لقائمة الموظفين</a>
+        }
+        else
+        {
+            <a asp-action="ApproveIndex">العودة لقائمة الموظفين<i class="bx bx-detail"></i></a>
+        }
+        }
 </div>
 
 @section Scripts {

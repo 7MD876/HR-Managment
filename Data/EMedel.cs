@@ -9,7 +9,7 @@ public partial class EMedel
 
     public int MedalsId { get; set; }
 
-    public DateTime DateMedals { get; set; }
+    public string DateMedals { get; set; }
 
     public int Idemployees { get; set; }
 

@@ -1,55 +1,409 @@
-﻿@model LearningManagementSystem.Data.Employee
+﻿@using LearningManagementSystem.Enums
+@model LearningManagementSystem.Data.Employee
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
+<h3><i class="bx bx-book" ></i>تفاصيل بيانات الموظف</h3>
+<hr />
 <div>
-    <h4>Employee</h4>
-    <hr />
-    <dl class="row">
+    @* <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title"><i class="bx bx-detail"></i>البيانات الاساسية</h5>
+            <div class="card-subtitle text-muted mb-3">اسم الموظف:</div>
+            <p class="card-text">
+                @Html.DisplayFor(model => model.Name)
+            </p>
+            <div class="card-subtitle text-muted mb-3">رقم الهوية:</div>
+            <p class="card-text">
+                @Html.DisplayFor(model => model.Identitynumber)
+            </p>
+        </div>
+    </div> *@
+    <H4><i class="bx bx-detail"></i>البيانات الاساسية:</H4>
+       <dl class="row" style="    margin-right: 30px;">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            اسم الموظف
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Identitynumber)
+            رقم الهوية
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Identitynumber)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Employeenumber)
+            الرقم الوظيفي
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Employeenumber)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gender)
+            الجنس
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gender)
+            @{
+                if (Model.Gender == 1)
+                {
+                    var description = Gender.male.GetDisplayName();
+                    @Html.DisplayFor(s => description)
+                }
+                else
+                {
+                    var description = Gender.female.GetDisplayName();
+                    @Html.DisplayFor(s => description)
+                }
+            }
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.JopTypeNavigation)
+      @*   <dt class = "col-sm-2">
+            مسمى الوظيفة
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.JopTypeNavigation.Idjops)
-        </dd>
+            @Html.DisplayFor(model => model.JopTypeNavigation.JopName)
+        </dd> *@
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Rank)
+            الرتبة
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Rank.Idrank)
+            @Html.DisplayFor(model => model.Rank.Rankname)
         </dd>
     </dl>
+    <h4><i class="bx bx-list-minus"></i>بيانات الدورات:</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>اسم الدورة</th>
+                <th>تاريخ بداية الدورة</th>
+                <th>تاريخ نهاية الدورة</th>
+                <th>التقييم</th>
+                <th>العمليات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ECourses)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course.CourseName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfStart)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfEnd)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rating)
+                    </td>
+                    <td>
+                        <a asp-controller= "ECourses" asp-action="Edit" asp-route-id="@item.IdemployeesCourses">تعديل</a> |
+                        <a asp-controller="ECourses" asp-action="Details" asp-route-id="@item.IdemployeesCourses">تفاصيل</a> |
+                        <a asp-controller="ECourses" asp-action="Delete" asp-route-id="@item.IdemployeesCourses">حذف</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+    <h4><i class="bx bx-transfer"></i>بيانات التنقلات:</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>نوع التنقل</th>
+                <th>تاريخ التنقل</th>
+                <th>من الوحدة</th>
+                <th>الى الوحدة</th>
+                <th>العمليات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ETransfers)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Transfer.TransferName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransferDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FromUnitNavigation.UnitName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ToUnitNavigation.UnitName)
+                    </td>
+                    <td>
+                        <a asp-controller="ETransfers" asp-action="Edit" asp-route-id="@item.IdTransfer">تعديل</a> |
+                        <a asp-controller="ETransfers" asp-action="Details" asp-route-id="@item.IdTransfer">تفاصيل</a> |
+                        <a asp-controller="ETransfers" asp-action="Delete" asp-route-id="@item.IdTransfer">حذف</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <h4><i class="bx bx-medal"></i>بيانات الانواط:</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    النوع
+                </th>
+                <th>
+                    تاريخ الوسام أو النوط
+                </th>
+                <th>العمليات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.EMedels)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Medals.MedelsName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateMedals)
+                    </td>
+                    <td>
+                        <a asp-controller="EMedels" asp-action="Edit" asp-route-id="@item.IdeMedals">تعديل</a> |
+                        <a asp-controller="EMedels" asp-action="Details" asp-route-id="@item.IdeMedals">تفاصيل</a> |
+                        <a asp-controller="EMedels" asp-action="Delete" asp-route-id="@item.IdeMedals">حذف</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 <div>
-    <input type="submit" value="Create" class="btn btn-primary" />
-    <a asp-action="Edit" asp-route-id="@Model.IdEmployees">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @{
+        if (Model.Enterd == true && Model.Audited != true)
+        {
+            <input type="submit" value="ارسال" onclick="GoToApprove('@Model.IdEmployees')" class="btn btn-primary" style=" background: green;" />
+            <input type="submit" value="ارجاع" onclick="BackToEntry('@Model.IdEmployees')" class="btn btn-primary" style=" background: red;" />
+        }
+        else if (Model.Enterd == true && Model.Audited == true && Model.Approved !=true)
+        {
+            <input type="submit" value="اعتماد" onclick="GoToFinish('@Model.IdEmployees')" class="btn btn-primary" style=" background: green;" />
+            <input type="submit" value="ارجاع" onclick="BackToAudit('@Model.IdEmployees')" class="btn btn-primary" style=" background: red;" />
+        }   
+
+        else
+        {
+            <input type="submit" value="ارسال" onclick="GoToAudit('@Model.IdEmployees')" class="btn btn-primary" style=" background: green;" />
+        }
+    }
+    @* <input type="submit" value="ارسال" onclick="n('@Model.IdEmployees')" class="btn btn-primary"style=" background: green;"/> *@
+    <a asp-action="Edit" asp-route-id="@Model.IdEmployees"><i class="bx bx-edit"></i>تعديل البيانات الأساسية</a> |
+    @{
+        if (Model.Enterd != true && Model.Audited != true && Model.Approved != true)
+        {
+            <a asp-action="Index"><i class="bx bx-arrow-back"></i>العودة لقائمة الموظفين</a>
+        }
+        else if (Model.Enterd == true && Model.Audited != true && Model.Approved != true)
+        {
+            <a asp-action="AuditIndex">العودة لقائمة الموظفين</a>
+        }
+        else
+        {
+            <a asp-action="ApproveIndex">العودة لقائمة الموظفين</a>
+        }
+    }
 </div>
+<script type="text/javascript">
+    function GoToAudit(Id) {
+        var url = "@Url.Action("sendToAudit", "Employees")";
+        Swal.fire(
+            {
+            title: "تأكيد",
+            text: "هل تريد ارسال البيانات الى المدقق",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "موافق",
+                cancelButtonText: "إلغاء الامر",
+        }).then((result) =>
+        {
+            if (result.isConfirmed) 
+            {
+                $.ajax(
+                    {
+                    url:url,
+                    data: 
+                    {
+                        id:Id 
+                    },
+                    type:'POST',
+                    success: function (data) 
+                    {
+                        Swal.fire({
+                            title: "تم !",
+                            text: "تم ارسال البيانات الى المدقق",
+                            icon: "success",
+                            CloseOnConfirm:false,
+                            CloseOnCancel: false,
+                        }).then((result) => {
+                            window.location.href = "/Employees/index"
+                        })
+                    }
+                })
+                
+            }
+        });
+    }
+    function GoToApprove(Id) {
+        var url = "@Url.Action("sendToApprove", "Employees")";
+        Swal.fire(
+            {
+                title: "تأكيد",
+                text: "هل تريد ارسال البيانات الى المعتمد",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "موافق",
+                cancelButtonText: "إلغاء الامر",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax(
+                        {
+                            url: url,
+                            data:
+                            {
+                                id: Id
+                            },
+                            type: 'POST',
+                            success: function (data) {
+                                Swal.fire({
+                                    title: "تم !",
+                                    text: "تم ارسال البيانات الى المعتمد",
+                                    icon: "success",
+                                    CloseOnConfirm: false,
+                                    CloseOnCancel: false,
+                                }).then((result) => {
+                                    window.location.href = "/Employees/AuditIndex"
+                                })
+                            }
+                        })
+
+                }
+            });
+    }
+    function GoToFinish(Id) {
+        var url = "@Url.Action("sendToFinish", "Employees")";
+        Swal.fire(
+            {
+                title: "تأكيد",
+                text: "هل تريد اعتماد البيانات",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "موافق",
+                cancelButtonText: "إلغاء الامر",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax(
+                        {
+                            url: url,
+                            data:
+                            {
+                                id: Id
+                            },
+                            type: 'POST',
+                            success: function (data) {
+                                Swal.fire({
+                                    title: "تم !",
+                                    text: "تم اعتماد البيانات بنجاح",
+                                    icon: "success",
+                                    CloseOnConfirm: false,
+                                    CloseOnCancel: false,
+                                }).then((result) => {
+                                    window.location.href = "/Employees/ApproveIndex"
+                                })
+                            }
+                        })
+
+                }
+            });
+    }
+    function BackToEntry(Id) {
+        var url = "@Url.Action("BackToEntry", "Employees")";
+        Swal.fire(
+            {
+                title: "تأكيد",
+                text: "هل تريد ارجاع البيانات الى المدخل",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "موافق",
+                cancelButtonText: "إلغاء الامر",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax(
+                        {
+                            url: url,
+                            data:
+                            {
+                                id: Id
+                            },
+                            type: 'POST',
+                            success: function (data) {
+                                Swal.fire({
+                                    title: "تم !",
+                                    text: "تم ارجاع البيانات الى المدخل",
+                                    icon: "success",
+                                    CloseOnConfirm: false,
+                                    CloseOnCancel: false,
+                                }).then((result) => {
+                                    window.location.href = "/Employees/AuditIndex"
+                                })
+                            }
+                        })
+
+                }
+            });
+    }
+    function BackToAudit(Id) {
+        var url = "@Url.Action("BackToAudit", "Employees")";
+        Swal.fire(
+            {
+                title: "تأكيد",
+                text: "هل تريد ارجاع البيانات الى المدقق",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "موافق",
+                cancelButtonText: "إلغاء الامر",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax(
+                        {
+                            url: url,
+                            data:
+                            {
+                                id: Id
+                            },
+                            type: 'POST',
+                            success: function (data) {
+                                Swal.fire({
+                                    title: "تم !",
+                                    text: "تم ارجاع البيانات الى المدقق",
+                                    icon: "success",
+                                    CloseOnConfirm: false,
+                                    CloseOnCancel: false,
+                                }).then((result) => {
+                                    window.location.href = "/Employees/ApproveIndex"
+                                })
+                            }
+                        })
+
+                }
+            });
+    }
+</script>

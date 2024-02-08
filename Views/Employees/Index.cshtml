@@ -5,14 +5,20 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>قائمة الموظفين</h1>
+<script src="~/js/jquery.datatables.min.js"></script>
+<link href="~/css/jquery.datatables.min.css" rel="stylesheet" />
+
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">إضافة بيانات موظف</a>
 </p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                حالة الطلب
+            </th>
             <th>
                الاسم
             </th>
@@ -26,17 +32,37 @@
                 الجنس
             </th>
             <th>
-                نوع الوظيفة
+                مسمى الوظيفة
             </th>
             <th>
                 الرتبة
             </th>
-            <th></th>
+            <th>العمليات</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+            <tr>
+                <td>
+                    @{
+                        if (item.Enterd != true&&item.Audited!=true&&item.Approved!=true)
+                        {
+                            <span class="badge bg-label-primary me-1">مدخل</span>
+                        }
+                        else if (item.Enterd == true && item.Audited != true && item.Approved != true)
+                        {
+                            <span class="badge bg-label-warning me-1">بانتظار التدقيق</span>
+                        }
+                        else if (item.Enterd == true && item.Audited == true && item.Approved != true)
+                        {
+                            <span class="badge bg-label-info me-1">بانتظار الاعتماد</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-label-success me-1">تم الاعتماد</span>
+                        }
+                    }
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -68,12 +94,28 @@
                 @Html.DisplayFor(modelItem => item.Rank.Rankname)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdEmployees">تعديل</a> |
-                <a asp-action="Details" asp-route-id="@item.IdEmployees">عرض</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdEmployees">حذف</a> |
-                <a asp-controller="ECourses" asp-action="Create" asp-route-id="@item.IdEmployees">اضافة دورة</a> |
-                <a asp-controller="EMedels" asp-action="Create" asp-route-id="@item.IdEmployees">اضافة نوط</a> |
-                <a asp-controller="ETransfers" asp-action="Create" asp-route-id="@item.IdEmployees">اضافة تنقل</a> 
+                    <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu" style="">
+                            <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.IdEmployees"><i class="bx bx-edit-alt me-1"></i>تعديل</a>
+                            
+                            @if (item.Enterd != true)
+                            {
+                                <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.IdEmployees"><i class="bx bx-trash me-1"></i> حذف</a>
+                                <a class="dropdown-item" asp-action="Details" asp-route-id="@item.IdEmployees"><i class="bx bx-send me-1"></i>ارسال</a>
+                            }
+                            else
+                            {
+                                <a class="dropdown-item" asp-action="EmployeeFile" asp-route-id="@item.IdEmployees"><i class="bx bxs-report me-1"></i>التفاصيل</a>
+                            }   
+                            <a class="dropdown-item" asp-controller="ECourses" asp-action="Create" asp-route-id="@item.IdEmployees"><i class="bx bxs-book-add me-1"></i>اضافة دورة</a>
+                            <a class="dropdown-item" asp-controller="EMedels" asp-action="Create" asp-route-id="@item.IdEmployees"><i class="bx bx-medal me-1"></i>اضافة نوط</a>
+                            <a class="dropdown-item" asp-controller="ETransfers" asp-action="Create" asp-route-id="@item.IdEmployees"><i class="bx bx-transfer me-1"></i>اضافة تنقل</a>
+                        </div>
+                    </div>
+                
                     
             </td>
         </tr>

@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LearningManagementSystem.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LearningManagementSystem.Controllers
 {
+    //[Authorize("Authorization")]
     public class CoursesController : Controller
     {
         private readonly Teat2Context _context;

@@ -51,6 +51,8 @@ public partial class Teat2Context : DbContext
 
     public virtual DbSet<Tranfer> Tranfers { get; set; }
 
+    public virtual DbSet<Unit> Units { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=teat2;Trusted_Connection=True;TrustServerCertificate=True;");
@@ -174,6 +176,8 @@ public partial class Teat2Context : DbContext
 
             entity.Property(e => e.IdemployeesCourses).HasColumnName("IDEmployeesCourses");
             entity.Property(e => e.CourseId).HasColumnName("CourseID");
+            entity.Property(e => e.DateOfEnd).HasMaxLength(50);
+            entity.Property(e => e.DateOfStart).HasMaxLength(50);
             entity.Property(e => e.EndDate).HasColumnType("date");
             entity.Property(e => e.Idemployees).HasColumnName("IDEmployees");
             entity.Property(e => e.Rating)
@@ -221,7 +225,9 @@ public partial class Teat2Context : DbContext
             entity.ToTable("E_Medels");
 
             entity.Property(e => e.IdeMedals).HasColumnName("IDE_Medals");
-            entity.Property(e => e.DateMedals).HasColumnType("date");
+            entity.Property(e => e.DateMedals)
+                .IsRequired()
+                .HasMaxLength(100);
             entity.Property(e => e.Idemployees).HasColumnName("IDEmployees");
             entity.Property(e => e.MedalsId).HasColumnName("MedalsID");
 
@@ -242,17 +248,26 @@ public partial class Teat2Context : DbContext
 
             entity.ToTable("E_Transfer");
 
-            entity.Property(e => e.IdTransfer).ValueGeneratedOnAdd();
-            entity.Property(e => e.TransferDate).HasColumnType("date");
+            entity.Property(e => e.TransferDate)
+                .IsRequired()
+                .HasMaxLength(100);
             entity.Property(e => e.TransferId).HasColumnName("TransferID");
+
+            entity.HasOne(d => d.FromUnitNavigation).WithMany(p => p.ETransferFromUnitNavigations)
+                .HasForeignKey(d => d.FromUnit)
+                .HasConstraintName("FK_E_Transfer_Units");
 
             entity.HasOne(d => d.IdEmployeesNavigation).WithMany(p => p.ETransfers)
                 .HasForeignKey(d => d.IdEmployees)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Transfer_employees");
 
-            entity.HasOne(d => d.Units).WithMany(p => p.ETransfers)
-                .HasForeignKey<ETransfer>(d => d.IdTransfer)
+            entity.HasOne(d => d.ToUnitNavigation).WithMany(p => p.ETransferToUnitNavigations)
+                .HasForeignKey(d => d.ToUnit)
+                .HasConstraintName("FK_E_Transfer_Units1");
+
+            entity.HasOne(d => d.Transfer).WithMany(p => p.ETransfers)
+                .HasForeignKey(d => d.TransferId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_E_Transfer_Tranfer");
         });
@@ -263,6 +278,7 @@ public partial class Teat2Context : DbContext
 
             entity.ToTable("employees");
 
+            entity.Property(e => e.Category).HasColumnName("category");
             entity.Property(e => e.Employeenumber).HasColumnName("EMPLOYEENUMBER");
             entity.Property(e => e.Enterd).HasColumnName("enterd");
             entity.Property(e => e.Identitynumber).HasColumnName("IDENTITYNUMBER");
@@ -271,16 +287,20 @@ public partial class Teat2Context : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("name");
             entity.Property(e => e.RankId).HasColumnName("RankID");
+            entity.Property(e => e.UnitId).HasColumnName("UnitID");
 
             entity.HasOne(d => d.JopTypeNavigation).WithMany(p => p.Employees)
                 .HasForeignKey(d => d.JopType)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_employees_Jops");
 
             entity.HasOne(d => d.Rank).WithMany(p => p.Employees)
                 .HasForeignKey(d => d.RankId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_employees_Rank");
+
+            entity.HasOne(d => d.Unit).WithMany(p => p.Employees)
+                .HasForeignKey(d => d.UnitId)
+                .HasConstraintName("FK_employees_Units");
         });
 
         modelBuilder.Entity<Jop>(entity =>
@@ -323,6 +343,11 @@ public partial class Teat2Context : DbContext
             entity.Property(e => e.TransferName)
                 .IsRequired()
                 .HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<Unit>(entity =>
+        {
+            entity.Property(e => e.UnitName).IsRequired();
         });
 
         OnModelCreatingPartial(modelBuilder);

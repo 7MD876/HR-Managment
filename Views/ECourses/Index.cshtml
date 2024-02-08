@@ -7,16 +7,16 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @* <a asp-action="Create">Create New</a> *@
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
+                @Html.DisplayNameFor(model => model.DateOfStart)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndDate)
+                @Html.DisplayNameFor(model => model.DateOfEnd)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Rating)
@@ -34,19 +34,19 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
+                    @Html.DisplayFor(modelItem => item.DateOfStart)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
+                    @Html.DisplayFor(modelItem => item.DateOfEnd)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Rating)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Course.CourseId)
+                @Html.DisplayFor(modelItem => item.Course.CourseName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdemployeesNavigation.IdEmployees)
+                @Html.DisplayFor(modelItem => item.IdemployeesNavigation.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdemployeesCourses">Edit</a> |
@@ -57,3 +57,4 @@
 }
     </tbody>
 </table>
+<a asp-controller="Employees" asp-action="Index">Back to List</a>

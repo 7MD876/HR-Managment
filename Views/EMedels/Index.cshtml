@@ -7,19 +7,19 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @* <a asp-action="Create">Create New</a> *@
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DateMedals)
+                تاريخ الوسام أو النوط
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdemployeesNavigation)
+                الاسم
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Medals)
+               النوع
             </th>
             <th></th>
         </tr>
@@ -37,11 +37,15 @@
                 @Html.DisplayFor(modelItem => item.Medals.Idmedels)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdeMedals">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdeMedals">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdeMedals">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.IdeMedals">تعديل</a> |
+                <a asp-action="Details" asp-route-id="@item.IdeMedals">تفاصيل</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdeMedals">حذف</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+<div>
+    <a asp-controller="Employees" asp-action="Index">العوده للقائمة السابقة</a>
+    
+</div>

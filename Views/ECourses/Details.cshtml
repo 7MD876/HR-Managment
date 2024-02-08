@@ -1,48 +1,153 @@
 ﻿@model LearningManagementSystem.Data.ECourse
 
-@{
-    ViewData["Title"] = "Details";
-}
-
-<h1>Details</h1>
-
+<h1>تفاصيل الدورة</h1>
+<link href="~/dropzone/basic.min.css" rel="stylesheet" />
+<link href="~/dropzone/dropzone.min.css" rel="stylesheet" />
+<script src="~/dropzone/dropzone.min.js"></script>
+<link href="~/css/formstylesheet.css" rel="stylesheet" />
+<script src="~/js/jquery.min.js"></script>
+<script src="~/js/popper.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 <div>
-    <h4>ECourse</h4>
+    <h4></h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
+            تاريخ بداية الدورة
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
+            @Html.DisplayFor(model => model.DateOfStart)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
+            تاريخ نهاية الدورة
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
+            @Html.DisplayFor(model => model.DateOfEnd)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Rating)
+            التقييم
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Rating)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Course)
+            مسمى الدورة
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Course.CourseId)
+            @Html.DisplayFor(model => model.Course.CourseName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdemployeesNavigation)
+            اسم الطالب
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdemployeesNavigation.IdEmployees)
+            @Html.DisplayFor(model => model.IdemployeesNavigation.Name)
+        </dd>
+        <dt class="col-sm-2">
+            المرفقات
+        </dt>
+        <dd>
+            <form method="post" class="dropzone" id="dropzoneForm" asp-action="" enctype="multipart/form-data">
+                <div class="mt-3">
+                    @Html.HiddenFor(m => m.CourseId)
+                    @Html.HiddenFor(m => m.Idemployees)
+                    @Html.HiddenFor(m => m.IdemployeesCourses)
+                    @Html.HiddenFor(m => m.IdemployeesNavigation.Identitynumber)
+                    <div class="fallback">
+                        <input type="file" name="files" multiple />
+                        <input type="submit" value="Upload" />
+                    </div>
+                </div>
+            </form>
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.IdemployeesCourses">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.IdemployeesCourses">تعديل بيانات الدورة</a> |
+    <a asp-controller="Employees" asp-action="Details" asp-route-id=" @Model.Idemployees"> <i class="bx bx-detail"></i>العودة لبيانات الموظف</a>
 </div>
+<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="downloadModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h6 class="modal-title" id="downloadModalLabel">
+                    <i class='fas fa-download'></i> تنزيل (<span id="modalFileSize"></span>)
+                </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body form-group">
+                <label class="form-control-plaintext" id="modalFileName"></label>
+                <input type="text" id="modalUrl" class="form-control myUrl" value="" readonly />
+            </div>
+            <div class="modal-footer">
+                <a href="" class="btn btn-success" id="modalDownload" target="_blank">
+                    <i class='fas fa-download'></i>
+                    تنزيل
+                </a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء التنزيل</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    Dropzone.options.dropzoneForm = {
+        clickable:false,
+        init: function () {
+            var myDropzone = this;
+            
+            var url = "@Url.Action("OnGetListFolderContents", "ECourses")"
+            $.getJSON(url, { courseID: $('#CourseId').val(), IdentityNumber: $('#IdemployeesNavigation_Identitynumber').val() }).done(function (data) {
+                //Call the action method to load the images from the server
+
+                if (data !== null && data.length > 0) {
+                    $.each(data, function (index, item) {
+                        //// Create the mock file:
+                        var mockFile = {
+                            name: item.name,
+                            size: item.fileSize,
+                            filePath: item.filePath
+                        };
+
+                        // Call the default addedfile event handler
+                        myDropzone.emit("addedfile", mockFile);
+                        // And optionally show the thumbnail of the file:
+                        myDropzone.emit("thumbnail", mockFile, item.filePath);
+
+                        // Make sure there is no progress bar ober tha image
+                        myDropzone.emit("complete", mockFile);
+
+                        // subtract loaded files from max files count to keep upload limit
+                        //myDropzone.options.maxFiles -= 1;
+
+                    });
+                }
+            });
+            myDropzone.on("addedfile", function (file) {
+                console.log('Im here4')
+                var downloadBtn = Dropzone.createElement("<a class='dz-download' style='visibility:hidden' href='#downloadModal' data-file-name='" + file.name + "' data-toggle='modal' data-file-size='" + file.size + "' data-img-url='" + file.filePath + "'><i class='fas fa-download text-success'></i></a>");
+                file.previewElement.appendChild(downloadBtn);
+                console.log(file.previewElement)
+                file.previewElement.addEventListener("click", function () {
+                    downloadBtn.click();
+                });
+            });
+        },
+        
+    };
+    $('#downloadModal').on('show.bs.modal', function (e) {
+        //get data-id attribute of the clicked element
+        console.log('Im here 5')
+        var fileUrl = $(e.relatedTarget).data('img-url');
+        var fileSize = $(e.relatedTarget).data('file-size');
+        var fileName = $(e.relatedTarget).data('file-name');
+
+        var fs = fileSize / (1024 * 1024);
+        //populate the textbox
+        $("#modalUrl").attr("value", fileUrl);
+        $("#modalDownload").attr("href", fileUrl);
+        $("#modalFileSize").html(fs.toFixed(2) + " MB");
+        $("#modalFileName").html(fileName);
+
+    });
+</script>

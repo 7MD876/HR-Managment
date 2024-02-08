@@ -1,0 +1,113 @@
+﻿@using LearningManagementSystem.Enums
+@model IEnumerable<LearningManagementSystem.Data.Employee>
+@{
+    ViewData["Title"] = "AuditIndex";
+}
+<h1>قائمة الموظفين</h1>
+
+<script src="~/js/jquery.min.js"></script>
+<script src="~/js/jquery.datatables.min.js"></script>
+<link href="~/css/jquery.datatables.min.css" rel="stylesheet" />
+
+@* <p>
+    <a asp-action="Create">Create New</a>
+</p> *@
+
+        <table id="example" class="table">
+            <thead>
+                <tr>
+                    <th>
+                        حالة الطلب
+                    </th>
+                    <th>
+                        الاسم
+                    </th>
+                    <th>
+                        رقم الهوية
+                    </th>
+                    <th>
+                        الرقم الوظيفي
+                    </th>
+                    <th>
+                        الجنس
+                    </th>
+                    <th>
+                        مسمى الوظيفة
+                    </th>
+                    <th>
+                        الرتبة
+                    </th>
+                    <th>العمليات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @{
+                                 if (item.Enterd == true && item.Audited != true && item.Approved != true)
+                                {
+                                    <span class="badge bg-label-warning me-1">بانتظار التدقيق</span>
+                                }
+                                else if (item.Enterd == true && item.Audited == true && item.Approved != true)
+                                {
+                                    <span class="badge bg-label-info me-1">بانتظار الاعتماد</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-label-success me-1">تم الاعتماد</span>
+                                }
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Identitynumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Employeenumber)
+                        </td>
+                        <td>
+                            @{
+                                if (item.Gender == 1)
+                                {
+                                    var description = Gender.male.GetDisplayName();
+                                    @Html.DisplayFor(s => description)
+                                }
+                                else
+                                {
+                                    var description = Gender.female.GetDisplayName();
+                                    @Html.DisplayFor(s => description)
+                                }
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.JopTypeNavigation.JopName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rank.Rankname)
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu" style="">
+                                    @if (item.Audited != true)
+                                    {
+                                        <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.IdEmployees"><i class="bx bx-edit-alt me-1"></i>تعديل</a>
+                                        <a class="dropdown-item" asp-action="Details" asp-route-id="@item.IdEmployees"><i class="bx bx-send me-1"></i>ارسال</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="dropdown-item" asp-action="EmployeeFile" asp-route-id="@item.IdEmployees"><i class="bx bxs-report me-1"></i>التفاصيل</a>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>

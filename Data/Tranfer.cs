@@ -9,5 +9,5 @@ public partial class Tranfer
 
     public string TransferName { get; set; }
 
-    public virtual ETransfer ETransfer { get; set; }
+    public virtual ICollection<ETransfer> ETransfers { get; set; } = new List<ETransfer>();
 }

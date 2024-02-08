@@ -4,42 +4,42 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h1>حذف تنقل</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+
 <div>
-    <h4>ETransfer</h4>
+   
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TransferId)
+        <dt class="col-sm-2">
+            الوحده المنقول اليها
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TransferId)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdEmployees)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TransferDate)
+        <dt class="col-sm-2">
+            تاريخ التنقل
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TransferDate)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdEmployeesNavigation)
+        <dt class="col-sm-2">
+           الرقم الوظيفي
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IdEmployeesNavigation.IdEmployees)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdTransferNavigation)
+        <dt class="col-sm-2">
+            التنقل
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdTransferNavigation.TransferId)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Transfer.TransferName)
         </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="IdTransfer" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="حذف" class="btn btn-danger" /> |
+        <a asp-controller="Employees" asp-action="Details" asp-route-id="@Model.IdEmployees"><i class="bx bx-detail"></i>العودة لبيانات الموظف</a>
     </form>
 </div>

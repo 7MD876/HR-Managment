@@ -15,7 +15,7 @@ public partial class Employee
 
     public int Gender { get; set; }
 
-    public int JopType { get; set; }
+    public int? JopType { get; set; }
 
     public int RankId { get; set; }
 
@@ -24,6 +24,10 @@ public partial class Employee
     public bool? Audited { get; set; }
 
     public bool? Approved { get; set; }
+
+    public int? Category { get; set; }
+
+    public int? UnitId { get; set; }
 
     public virtual ICollection<ECourse> ECourses { get; set; } = new List<ECourse>();
 
@@ -36,4 +40,6 @@ public partial class Employee
     public virtual Jop JopTypeNavigation { get; set; }
 
     public virtual Rank Rank { get; set; }
+
+    public virtual Unit Unit { get; set; }
 }

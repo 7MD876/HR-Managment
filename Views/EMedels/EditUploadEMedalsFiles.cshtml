@@ -1,0 +1,183 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model LearningManagementSystem.Models.MedelsModel
+<h1></h1>
+
+<h4>اضافة نوط لـ @Html.Raw(ViewBag.EmployeeName)</h4>
+<hr />
+<div class="row">
+    @* <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" /> *@
+    <link href="~/dropzone/basic.min.css" rel="stylesheet" />
+    <link href="~/dropzone/dropzone.min.css" rel="stylesheet" />
+    <script src="~/dropzone/dropzone.min.js"></script>
+    <link href="~/css/formstylesheet.css" rel="stylesheet" />
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <div class="col-xxl">
+        <div class="card mb-4">
+            <div class="card-body">
+        <div id="multi-step-form-container">
+            <!-- Form Steps / Progress Bar -->
+            <ul class="form-stepper form-stepper-horizontal text-center mx-auto pl-0">
+                <!-- Step 1 -->
+                <li class="form-stepper-completed text-center form-stepper-list" step="1">
+                    <a class="mx-2">
+                        <span class="form-stepper-circle">
+                            <span>1</span>
+                        </span>
+                        <div class="label">البيانات الاساسية </div>
+                    </a>
+                </li>
+                <li class="form-stepper-active text-center form-stepper-list" step="2">
+                    <a class="mx-2">
+                        <span class="form-stepper-circle text-muted">
+                            <span>2</span>
+                        </span>
+                        <div class="label text-muted">المرفقات</div>
+                    </a>
+                </li>
+            </ul>
+            <!-- Step Wise Form Content -->
+            <form method="post" class="dropzone" id="dropzoneForm" asp-action="UploadFiles" enctype="multipart/form-data">
+                <div class="mt-3">
+                    @Html.HiddenFor(m => m.MedalsID)
+                    @Html.HiddenFor(m => m.empID)
+                    @Html.HiddenFor(m => m.IdeMedals)
+                    @Html.HiddenFor(m => m.IdentityNumber)
+                    <div class="fallback">
+                        <input type="file" name="files" multiple />
+                        <input type="submit" value="Upload" />
+                    </div>
+                </div>
+            </form>
+        </div>
+
+                <div class="mt-3">
+                    <button class="btn btn-primary" type="button" onclick="window.location.href='/EMedels/Edit/'+@Model.IdeMedals" step_number="1">
+                        السابق
+                    </button>
+                    <button class="btn btn-primary" type="button" onclick="ForwardToIndex()" step_number="3">حفظ</button>
+                </div>
+    </div>
+</div>
+<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="downloadModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h6 class="modal-title" id="downloadModalLabel">
+                    <i class='fas fa-download'></i> تنزيل (<span id="modalFileSize"></span>)
+                </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body form-group">
+                <label class="form-control-plaintext" id="modalFileName"></label>
+                <input type="text" id="modalUrl" class="form-control myUrl" value="" readonly />
+            </div>
+            <div class="modal-footer">
+                <a href="" class="btn btn-success" id="modalDownload" target="_blank">
+                    <i class='fas fa-download'></i>
+                    تنزيل
+                </a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء التنزيل</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    @*  <a asp-controller="Employees" asp-action="Index">Back to List</a> *@
+</div>
+</div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script type="text/javascript">
+    Dropzone.options.dropzoneForm = {
+        addRemoveLinks: true,
+        paramName: "files", //default param name is "file", make it "files" so it matches parameter name in the method
+        init: function () {
+            var myDropzone = this;
+            $.getJSON('OnGetListFolderContents', { IdeMedals: $('#IdeMedals').val(), IdentityNumber: $('#IdentityNumber').val() }).done(function (data) {
+                //Call the action method to load the images from the server
+
+                if (data !== null && data.length > 0) {
+                    $.each(data, function (index, item) {
+                        //// Create the mock file:
+                        var mockFile = {
+                            name: item.name,
+                            size: item.fileSize,
+                            filePath: item.filePath
+                        };
+                        
+                        // Call the default addedfile event handler
+                        myDropzone.emit("addedfile", mockFile);
+                        // And optionally show the thumbnail of the file:
+                        myDropzone.emit("thumbnail", mockFile, item.filePath);
+
+                        // Make sure there is no progress bar ober tha image
+                        myDropzone.emit("complete", mockFile);
+
+                        // subtract loaded files from max files count to keep upload limit
+                        //myDropzone.options.maxFiles -= 1;
+
+                    });
+                }
+            });
+            myDropzone.on("addedfile", function (file) {
+                console.log('Im here4')
+                var downloadBtn = Dropzone.createElement("<a class='dz-download' style='visibility:hidden' href='#downloadModal' data-file-name='" + file.name + "' data-toggle='modal' data-file-size='" + file.size + "' data-img-url='" + file.filePath + "'><i class='fas fa-download text-success'></i></a>");
+                file.previewElement.appendChild(downloadBtn);
+                file.previewElement.addEventListener("click", function () {
+                    downloadBtn.click();
+                });
+            });
+        },
+        dictRemoveFileConfirmation: "File will be deleted, click OK to continue?",
+        removedfile: function removedfile(file) {
+            var url = '@Url.Action("OnGetDeleteFile", "EMedels")';
+            $.getJSON(url, { file: file.name, IdeMedals: $('#IdeMedals').val(), IdentityNumber: $('#IdentityNumber').val() }).done(function (result) {
+                console.log("delete: " + result);
+                if (result === true) {
+                    if (file.previewElement != null && file.previewElement.parentNode != null) {
+                        file.previewElement.parentNode.removeChild(file.previewElement);
+                    }
+                }
+            });
+        },
+    };
+
+    function ForwardToIndex() {
+        Swal.fire({
+            title: "تم !",
+            text: "تم حفظ البيانات بنجاح",
+            icon: "success",
+            CloseOnConfirm: false,
+            CloseOnCancel: false,
+        }).then((result) => {
+            window.location.href = "/Employees/details/" + @Model.empID
+        })
+    }
+    $('#downloadModal').on('show.bs.modal', function (e) {
+        //get data-id attribute of the clicked element
+        console.log('Im here 5')
+        var fileUrl = $(e.relatedTarget).data('img-url');
+        var fileSize = $(e.relatedTarget).data('file-size');
+        var fileName = $(e.relatedTarget).data('file-name');
+
+        var fs = fileSize / (1024 * 1024);
+        //populate the textbox
+        $("#modalUrl").attr("value", fileUrl);
+        $("#modalDownload").attr("href", fileUrl);
+        $("#modalFileSize").html(fs.toFixed(2) + " MB");
+        $("#modalFileName").html(fileName);
+
+    });
+</script>

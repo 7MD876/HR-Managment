@@ -1,41 +1,81 @@
 ﻿@model LearningManagementSystem.Data.EMedel
 
-@{
-    ViewData["Title"] = "Create";
-}
-
-<h1>Create</h1>
-
-<h4>EMedel</h4>
+<h1></h1>
+<h4>اضافة وسام و أنواط لـ @Html.Raw(ViewBag.EmployeeName)</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <script src="~/js/jquery.slim.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/moment.min.js"></script>
+    <link href="~/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <script src="~/js/bootstrap-hijri-datepicker.min.js"></script>
+    <script src="~/js/bootstrap-hijri-datepicker.js"></script>
+    <script src="~/js/bootstrap-hijri-datetimepicker.min.js"></script>
+    <script src="~/js/bootstrap-hijri-datetimepicker.js"></script>
+    <link href="~/css/formstylesheet.css" rel="stylesheet" />
+    <div class="col-xxl">
+        <div class="card mb-4">
+            <div class="card-body">
+        <div id="multi-step-form-container">
+            <!-- Form Steps / Progress Bar -->
+            <ul class="form-stepper form-stepper-horizontal text-center mx-auto pl-0">
+                <!-- Step 1 -->
+                <li class="form-stepper-active text-center form-stepper-list" step="1">
+                    <a class="mx-2">
+                        <span class="form-stepper-circle">
+                            <span>1</span>
+                        </span>
+                        <div class="label">البيانات الاساسية للدورة</div>
+                    </a>
+                </li>
+                <li class="form-stepper-unfinished text-center form-stepper-list" step="2">
+                    <a class="mx-2">
+                        <span class="form-stepper-circle text-muted">
+                            <span>2</span>
+                        </span>
+                        <div class="label text-muted">المرفقات</div>
+                    </a>
+                </li>
+            </ul>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                TempData["idEmp"] = ViewBag.id;
+            }
             <div class="form-group">
-                <label asp-for="MedalsId" class="control-label"></label>
-                <select asp-for="MedalsId" class ="form-control" asp-items="ViewBag.MedalsId"></select>
+                <label  class="control-label">نوع الوسام</label>
+                <select asp-for="MedalsId" class="form-control" asp-items="ViewBag.Idmedels">
+                    <option>اختر واحد</option>
+                </select>
+
             </div>
             <div class="form-group">
-                <label asp-for="DateMedals" class="control-label"></label>
-                <input asp-for="DateMedals" class="form-control" />
+                <label  class="control-label">تاريخه</label>
+                <input asp-for="DateMedals" class="form-control hijri-date-input" />
                 <span asp-validation-for="DateMedals" class="text-danger"></span>
             </div>
-            <div class="form-group">
+           @*  <div class="form-group">
                 <label asp-for="Idemployees" class="control-label"></label>
                 <select asp-for="Idemployees" class ="form-control" asp-items="ViewBag.Idemployees"></select>
-            </div>
+            </div> *@
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="إضافة" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
+</div>
+</div>
+</div>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Employees" asp-action="Index">العودة لقائمة الموظفين</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<script type="text/javascript">
+    $(".hijri-date-input").hijriDatePicker();
+</script>

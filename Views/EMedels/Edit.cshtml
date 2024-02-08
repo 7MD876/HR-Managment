@@ -4,41 +4,84 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
 
-<h4>EMedel</h4>
+<h4>تعديل الأوسمة والأنواط لـ @Html.Raw(ViewBag.EmployeeName)</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <script src="~/js/jquery.slim.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/moment.min.js"></script>
+    <link href="~/dropzone/basic.min.css" rel="stylesheet" />
+    <link href="~/dropzone/dropzone.min.css" rel="stylesheet" />
+    <script src="~/dropzone/dropzone.min.js"></script>
+    <link href="~/css/formstylesheet.css" rel="stylesheet" />
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link href="~/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <script src="~/js/bootstrap-hijri-datepicker.min.js"></script>
+    <script src="~/js/bootstrap-hijri-datepicker.js"></script>
+    <script src="~/js/bootstrap-hijri-datetimepicker.min.js"></script>
+    <script src="~/js/bootstrap-hijri-datetimepicker.js"></script>
+    <div class="col-xxl">
+        <div class="card mb-4">
+            <div class="card-body">
+            <div id="multi-step-form-container">
+                <!-- Form Steps / Progress Bar -->
+                <ul class="form-stepper form-stepper-horizontal text-center mx-auto pl-0">
+                    <!-- Step 1 -->
+                    <li class="form-stepper-active text-center form-stepper-list" step="1">
+                        <a class="mx-2">
+                            <span class="form-stepper-circle">
+                                <span>1</span>
+                            </span>
+                            <div class="label">البيانات الاساسية للنوط</div>
+                        </a>
+                    </li>
+                    <li class="form-stepper-unfinished text-center form-stepper-list" step="2">
+                        <a class="mx-2">
+                            <span class="form-stepper-circle text-muted">
+                                <span>2</span>
+                            </span>
+                            <div class="label text-muted">المرفقات</div>
+                        </a>
+                    </li>
+                </ul>
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IdeMedals" />
+            @{
+                TempData["idEmp"] = ViewBag.id;
+            }
+                <input type="hidden" asp-for="IdeMedals" />
             <div class="form-group">
-                <label asp-for="MedalsId" class="control-label"></label>
-                <select asp-for="MedalsId" class="form-control" asp-items="ViewBag.MedalsId"></select>
-                <span asp-validation-for="MedalsId" class="text-danger"></span>
+                <label class="control-label">نوع الوسام</label>
+                <select asp-for="MedalsId" class="form-control" asp-items="ViewBag.MedalsId">
+                    <option>اختر واحد</option>
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="DateMedals" class="control-label"></label>
-                <input asp-for="DateMedals" class="form-control" />
+                <label class="control-label">تاريخه</label>
+                <input asp-for="DateMedals" class="form-control hijri-date-input" />
                 <span asp-validation-for="DateMedals" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Idemployees" class="control-label"></label>
-                <select asp-for="Idemployees" class="form-control" asp-items="ViewBag.Idemployees"></select>
-                <span asp-validation-for="Idemployees" class="text-danger"></span>
+                <input type="submit" value="التالي" class="btn btn-primary" />
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+           
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
-
+</div>
+</div>
+        <div>
+    <a asp-controller="Employees" asp-action="Details" asp-route-id="@Model.Idemployees"><i class="bx bx-detail"></i>العودة لبيانات الموظف</a>
+        </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+        <script type="text/javascript">
+            $(".hijri-date-input").hijriDatePicker();
+        </script>

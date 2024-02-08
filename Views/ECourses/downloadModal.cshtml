@@ -1,0 +1,41 @@
+﻿<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="downloadModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h6 class="modal-title" id="downloadModalLabel">
+                    <i class='fas fa-download'></i> Download (<span id="modalFileSize"></span>)
+                </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body form-group">
+                <label class="form-control-plaintext" id="modalFileName"></label>
+                <input type="text" id="modalUrl" class="form-control myUrl" value="" readonly />
+            </div>
+            <div class="modal-footer">
+                <a href="" class="btn btn-success" id="modalDownload" target="_blank">
+                    <i class='fas fa-download'></i>
+                    Download
+                </a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#downloadModal').on('show.bs.modal', function (e) {
+        //get data-id attribute of the clicked element
+        var fileUrl = $(e.relatedTarget).data('img-url');
+        var fileSize = $(e.relatedTarget).data('file-size');
+        var fileName = $(e.relatedTarget).data('file-name');
+
+        var fs = fileSize / (1024 * 1024);
+
+        //populate the textbox
+        $("#modalUrl").attr("value", fileUrl);
+        $("#modalDownload").attr("href", fileUrl);
+        $("#modalFileSize").html(fs.toFixed(2) + " MB");
+        $("#modalFileName").html(fileName);
+    });
+</script>
