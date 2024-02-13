@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace LearningManagementSystem.Controllers
 {
-    //[Authorize("Authorization")]
+    [Authorize("Authorization")]
     public class CoursesController : Controller
     {
         private readonly Teat2Context _context;

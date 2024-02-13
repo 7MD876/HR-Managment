@@ -18,22 +18,22 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateMedals)
+           تاريخ الحصول
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DateMedals)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdemployeesNavigation)
+            رقم الهوية
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdemployeesNavigation.IdEmployees)
+            @Html.DisplayFor(model => model.IdemployeesNavigation.Identitynumber)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medals)
+            اسم النوط / الوسام
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medals.Idmedels)
+            @Html.DisplayFor(model => model.Medals.MedelsName)
         </dd>
 
         <dt class="col-sm-2">
@@ -56,7 +56,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.IdeMedals">تعديل بيانات الاوسمة</a> |
+    
     <a asp-controller="Employees" asp-action="Details" asp-route-id="@Model.Idemployees"><i class="bx bx-detail"></i>العودة لبيانات الموظف</a>
 </div>
 <div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="downloadModalLabel" aria-hidden="true">
@@ -84,12 +84,12 @@
         </div>
     </div>
 </div>
-<div class="mt-3">
+@* <div class="mt-3">
     <button class="button btn-navigate-form-step" type="button" onclick="window.location.href='/EMedels/Edit/'+@Model.IdeMedals" step_number="1">
         السابق
     </button>
     <button class="button btn-navigate-form-step" type="button" onclick="ForwardToIndex()" step_number="3">حفظ</button>
-</div>
+</div> *@
 <div>
     @*  <a asp-controller="Employees" asp-action="Index">Back to List</a> *@
 </div>

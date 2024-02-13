@@ -4,9 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Medel</h4>
+<h3>التعديل</h3>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,19 +12,19 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Idmedels" />
             <div class="form-group">
-                <label asp-for="MedelsName" class="control-label"></label>
+                <label hsl  class="control-label">اسم النوط / الوسام</label>
                 <input asp-for="MedelsName" class="form-control" />
                 <span asp-validation-for="MedelsName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="حفظ" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">العودة الى القائمة السابقة</a>
 </div>
 
 @section Scripts {

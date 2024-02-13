@@ -4,16 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h3>انواع التنقل</h3>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">انشاء جديد</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TransferName)
+                اسم التنقل
             </th>
             <th></th>
         </tr>
@@ -25,9 +25,9 @@
                 @Html.DisplayFor(modelItem => item.TransferName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.TransferId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TransferId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TransferId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.TransferId">التعديل</a> |
+                <a asp-action="Details" asp-route-id="@item.TransferId">التفاصيل</a> |
+                <a asp-action="Delete" asp-route-id="@item.TransferId">الحذف</a>
             </td>
         </tr>
 }

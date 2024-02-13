@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LearningManagementSystem.Data;
 using LearningManagementSystem.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LearningManagementSystem.Controllers
 {
@@ -293,7 +294,7 @@ namespace LearningManagementSystem.Controllers
         {
             return (_context.Employees?.Any(e => e.Identitynumber == id)).GetValueOrDefault();
         }
-
+        [AllowAnonymous]
         public JsonResult sendToAudit(int id)
         {
 
@@ -312,6 +313,7 @@ namespace LearningManagementSystem.Controllers
             }
 
         }
+        [AllowAnonymous]
         public JsonResult sendToApprove(int id)
         {
 
@@ -331,6 +333,7 @@ namespace LearningManagementSystem.Controllers
             }
 
         }
+        [AllowAnonymous]
         public JsonResult sendToFinish(int id)
         {
             
@@ -351,11 +354,18 @@ namespace LearningManagementSystem.Controllers
             }
 
         }
-        public JsonResult BackToEntry(int id)
+        [AllowAnonymous]
+        public JsonResult BackToEntry(int id,string rejectReason)
         {
             var em = _context.Employees.Find(id);
-            if (em != null)
+            var reject = new Rejection();
+            
+            if (em != null&& !rejectReason.IsNullOrEmpty())
             {
+                reject.RejectReason=rejectReason;
+                reject.IdEmployee = id; 
+                reject.IsActive = true;
+                _context.Add(reject);
                 em.Enterd = false;
                 em.Audited = false;
                 em.Approved = false;
@@ -369,11 +379,17 @@ namespace LearningManagementSystem.Controllers
                 return Json(false);
             }
         }
-        public JsonResult BackToAudit(int id)
+        [AllowAnonymous]
+        public JsonResult BackToAudit(int id, string rejectReason)
         {
             var em = _context.Employees.Find(id);
-            if (em != null)
+            var reject = new Rejection();
+            if (em != null && !rejectReason.IsNullOrEmpty())
             {
+                reject.RejectReason = rejectReason;
+                reject.IdEmployee = id;
+                reject.IsActive = true; 
+                _context.Add(reject);
                 em.Audited = false;
                 em.Approved = false;
                 _context.Update(em);

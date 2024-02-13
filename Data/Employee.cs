@@ -41,5 +41,7 @@ public partial class Employee
 
     public virtual Rank Rank { get; set; }
 
+    public virtual ICollection<Rejection> Rejections { get; set; } = new List<Rejection>();
+
     public virtual Unit Unit { get; set; }
 }

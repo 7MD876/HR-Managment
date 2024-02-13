@@ -4,16 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h3>مسميات الوظائف</h3>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">اضافة جديد</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.JopName)
+               مسمى الوظيفة
             </th>
             <th></th>
         </tr>
@@ -25,9 +25,9 @@
                 @Html.DisplayFor(modelItem => item.JopName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Idjops">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Idjops">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Idjops">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Idjops">تعديل</a> |
+                <a asp-action="Details" asp-route-id="@item.Idjops">التفاصيل</a> |
+                <a asp-action="Delete" asp-route-id="@item.Idjops">حذف</a>
             </td>
         </tr>
 }

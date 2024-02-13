@@ -49,6 +49,8 @@ public partial class Teat2Context : DbContext
 
     public virtual DbSet<Rank> Ranks { get; set; }
 
+    public virtual DbSet<Rejection> Rejections { get; set; }
+
     public virtual DbSet<Tranfer> Tranfers { get; set; }
 
     public virtual DbSet<Unit> Units { get; set; }
@@ -331,6 +333,17 @@ public partial class Teat2Context : DbContext
             entity.Property(e => e.Rankname)
                 .IsRequired()
                 .HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<Rejection>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.RejectReason).IsRequired();
+
+            entity.HasOne(d => d.IdEmployeeNavigation).WithMany(p => p.Rejections)
+                .HasForeignKey(d => d.IdEmployee)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Rejections_employees");
         });
 
         modelBuilder.Entity<Tranfer>(entity =>

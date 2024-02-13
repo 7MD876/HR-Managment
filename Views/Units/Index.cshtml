@@ -4,19 +4,19 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h3>الوحدات</h3>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">إنشاء جديد</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UnitName)
+                اسم الوحدة  
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UnitNumber)
+              رقم الوحدة
             </th>
             <th></th>
         </tr>
@@ -31,9 +31,9 @@
                 @Html.DisplayFor(modelItem => item.UnitNumber)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.UnitId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UnitId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UnitId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.UnitId">التعديل</a> |
+                <a asp-action="Details" asp-route-id="@item.UnitId">التفاصيل</a> |
+                <a asp-action="Delete" asp-route-id="@item.UnitId">الحذف</a>
             </td>
         </tr>
 }

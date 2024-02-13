@@ -4,20 +4,20 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h3>التفاصيل</h3>
 
 <div>
-    <h4>Unit</h4>
+    
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UnitName)
+           اسم الوحدة
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.UnitName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UnitNumber)
+            رقم الوحدة
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.UnitNumber)
@@ -25,6 +25,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.UnitId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    
+    <a asp-action="Index">العودة الى القائمة السابقة</a>
 </div>
