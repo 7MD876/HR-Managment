@@ -113,9 +113,14 @@ public partial class Teat2Context : DbContext
                 .HasFilter("([NormalizedUserName] IS NOT NULL)");
 
             entity.Property(e => e.Email).HasMaxLength(256);
+            entity.Property(e => e.IdentityNumber).HasColumnName("identityNumber");
             entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
             entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
             entity.Property(e => e.UserName).HasMaxLength(256);
+
+            entity.HasOne(d => d.Unit).WithMany(p => p.AspNetUsers)
+                .HasForeignKey(d => d.UnitId)
+                .HasConstraintName("FK_AspNetUsers_Units");
 
             entity.HasMany(d => d.Roles).WithMany(p => p.Users)
                 .UsingEntity<Dictionary<string, object>>(

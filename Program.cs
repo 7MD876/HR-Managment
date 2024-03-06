@@ -5,6 +5,9 @@ using LearningManagementSystem;
 using LearningManagementSystem.Data;
 using LearningManagementSystem.Handlers;
 using LearningManagementSystem.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Principal;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +17,18 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 	options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.None;
 });
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+	.AddCookie(options =>
+	{
+		options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+		options.SlidingExpiration = true;
+		options.AccessDeniedPath = "/Identity/Account/AccessDenied/";
+		
+	}); 
 
-    builder.Services.AddDbContext<Teat2Context>(options =>
+ 
+
+builder.Services.AddDbContext<Teat2Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -23,12 +36,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
-	options.SignIn.RequireConfirmedAccount = true;
 	options.Password.RequireDigit = true;
 	options.Password.RequiredLength = 6;
 	options.Password.RequireNonAlphanumeric = false;
 	options.Password.RequireUppercase = false;
 	options.Password.RequireLowercase = false;
+    options.User.AllowedUserNameCharacters = null;
 })
 	.AddRoles<IdentityRole>()
 	.AddEntityFrameworkStores<ApplicationDbContext>();
@@ -71,7 +84,11 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+var cookiePolicyOptions = new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.Strict,
+};
+app.UseCookiePolicy(cookiePolicyOptions);
 app.UseEndpoints(endpoints =>
 {
 

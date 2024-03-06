@@ -1,0 +1,128 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using LearningManagementSystem.Enums
+@Model LearningManagementSystem.Data.Employee
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>طلباتي</h1>
+<script src="~/js/jquery.datatables.min.js"></script>
+<link href="~/css/jquery.datatables.min.css" rel="stylesheet" />
+
+
+<p>
+    <a asp-action="Create">إضافة بياناتي</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                حالة الطلب
+            </th>
+            <th>
+                الاسم
+            </th>
+            <th>
+                رقم الهوية
+            </th>
+            <th>
+                الرقم الوظيفي
+            </th>
+            <th>
+                الجنس
+            </th>
+            <th>
+                مسمى الوظيفة
+            </th>
+            <th>
+                الرتبة
+            </th>
+            <th>العمليات</th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td>
+                    @{
+
+                        if (Model.Enterd != true && Model.Audited != true && Model.Approved != true)
+                        {
+                            <span class="badge bg-label-primary me-1">مدخل</span>
+                        }
+                        else if (Model.Enterd == true && Model.Audited != true && Model.Approved != true)
+                        {
+                            <span class="badge bg-label-warning me-1">بانتظار التدقيق</span>
+                        }
+                        else if (Model.Enterd == true && Model.Audited == true && Model.Approved != true)
+                        {
+                            <span class="badge bg-label-info me-1">بانتظار الاعتماد</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-label-success me-1">تم الاعتماد</span>
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => Model.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => Model.Identitynumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => Model.Employeenumber)
+                </td>
+                <td>
+                    @{
+                        if (Model.Gender == 1)
+                        {
+                            var description = Gender.male.GetDisplayName();
+                            @Html.DisplayFor(s => description)
+                        }
+                        else
+                        {
+                            var description = Gender.female.GetDisplayName();
+                            @Html.DisplayFor(s => description)
+                        }
+                    }
+
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => Model.JopTypeNavigation.JopName)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => Model.Rank.Rankname)
+                </td>
+                <td>
+                    <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu" style="">
+                            <a class="dropdown-Model" asp-action="Edit" asp-route-id="@Model.IdEmployees"><i class="bx bx-edit-alt me-1"></i>تعديل</a>
+
+                            @if (Model.Enterd != true)
+                            {
+                                <a class="dropdown-Model" asp-action="Delete" asp-route-id="@Model.IdEmployees"><i class="bx bx-trash me-1"></i> حذف</a>
+                                <a class="dropdown-Model" asp-action="Details" asp-route-id="@Model.IdEmployees"><i class="bx bx-send me-1"></i>ارسال</a>
+                            }
+                            else
+                            {
+                                <a class="dropdown-Model" asp-action="EmployeeFile" asp-route-id="@Model.IdEmployees"><i class="bx bxs-report me-1"></i>التفاصيل</a>
+                            }
+                            <a class="dropdown-Model" asp-controller="ECourses" asp-action="Create" asp-route-id="@Model.IdEmployees"><i class="bx bxs-book-add me-1"></i>اضافة دورة</a>
+                            <a class="dropdown-Model" asp-controller="EMedels" asp-action="Create" asp-route-id="@Model.IdEmployees"><i class="bx bx-medal me-1"></i>اضافة نوط</a>
+                            <a class="dropdown-Model" asp-controller="ETransfers" asp-action="Create" asp-route-id="@Model.IdEmployees"><i class="bx bx-transfer me-1"></i>اضافة تنقل</a>
+                        </div>
+                    </div>
+
+
+                </td>
+            </tr>
+    </tbody>
+</table>

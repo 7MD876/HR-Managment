@@ -2,23 +2,30 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using LearningManagementSystem.Data;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.Identity.Client;
+using Microsoft.AspNetCore.Http;
 namespace LearningManagementSystem.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
+        private readonly Teat2Context _context=new Teat2Context();
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
@@ -45,7 +52,7 @@ namespace LearningManagementSystem.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -60,36 +67,90 @@ namespace LearningManagementSystem.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [DataType(DataType.PhoneNumber)]
+            [Display(Name = "رقم الهوية")]
+            public int identityNamber { get; set; }
+            public int? UnitId { get; set; }
+            public string Username { get; set; }
+            
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            ViewData["UnitsId"] = new SelectList(_context.Units, "UnitId", "UnitName");
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
-            {
-                var user = new IdentityUser {UserName=Input.Email,  Email = Input.Email };
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                {
+                var user = new IdentityUser {UserName=Input.Username,  Email = Input.Email };
+            var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    
+                    var addedUser = await _context.AspNetUsers.FindAsync(user.Id);
+                    addedUser.UnitId = Input.UnitId;
+                    _context.Update(addedUser);
+                    _context.SaveChanges();
+                    IEnumerable<string> beginnerRole = new string[] { "مدخل عادي" } ;
+                    await _userManager.AddToRolesAsync(user, beginnerRole);
+                    //var claims = new List<Claim>
+                    //{
+                    //    new Claim(ClaimTypes.Name, Input.Username),
+                    //};
+
+
+                    //var claimsIdentity = new ClaimsIdentity(
+                    //    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    //var authProperties = new AuthenticationProperties
+                    //{
+                    //    //AllowRefresh = <bool>,
+                    //    // Refreshing the authentication session should be allowed.
+
+                    //    //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                    //    // The time at which the authentication ticket expires. A 
+                    //    // value set here overrides the ExpireTimeSpan option of 
+                    //    // CookieAuthenticationOptions set with AddCookie.
+
+                    //    IsPersistent = true,
+                    //    // Whether the authentication session is persisted across 
+                    //    // multiple requests. When used with cookies, controls
+                    //    // whether the cookie's lifetime is absolute (matching the
+                    //    // lifetime of the authentication ticket) or session-based.
+
+                    //    //IssuedUtc = <DateTimeOffset>,
+                    //    // The time at which the authentication ticket was issued.
+
+                    //    //RedirectUri = <string>
+                    //    // The full path or absolute URI to be used as an http 
+                    //    // redirect response value.
+                    //};
+
+                    //await HttpContext.SignInAsync(
+                    //    CookieAuthenticationDefaults.AuthenticationScheme,
+                    //    new ClaimsPrincipal(claimsIdentity),
+                    //    authProperties);
                     _logger.LogInformation("User created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    //var callbackUrl = Url.Page(
+                    //    "/Account/ConfirmEmail",
+                    //    pageHandler: null,
+                    //    values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                    //    protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -97,6 +158,7 @@ namespace LearningManagementSystem.Areas.Identity.Pages.Account
                     }
                     else
                     {
+                        
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
@@ -108,6 +170,7 @@ namespace LearningManagementSystem.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            ViewData["UnitsId"] = new SelectList(_context.Units, "UnitId", "UnitName");
             return Page();
         }
     }

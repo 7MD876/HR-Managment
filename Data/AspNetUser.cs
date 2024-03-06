@@ -35,11 +35,17 @@ public partial class AspNetUser
 
     public int AccessFailedCount { get; set; }
 
+    public int? IdentityNumber { get; set; }
+
+    public int? UnitId { get; set; }
+
     public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; } = new List<AspNetUserClaim>();
 
     public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; } = new List<AspNetUserLogin>();
 
     public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; } = new List<AspNetUserToken>();
+
+    public virtual Unit Unit { get; set; }
 
     public virtual ICollection<AspNetRole> Roles { get; set; } = new List<AspNetRole>();
 }

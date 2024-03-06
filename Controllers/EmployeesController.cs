@@ -9,6 +9,9 @@ using LearningManagementSystem.Data;
 using LearningManagementSystem.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 
 namespace LearningManagementSystem.Controllers
 {
@@ -22,6 +25,17 @@ namespace LearningManagementSystem.Controllers
         public EmployeesController(Teat2Context context)
         {
             _context = context;
+        }
+        public async Task<IActionResult>singleIndex()
+        {
+            var userLogedNationalIDNumber = await _context.AspNetUsers.Where(s=>s.UserName==User.Identity.Name).FirstOrDefaultAsync();
+
+            //string userName = HttpContext.Request.Cookies["userName"];
+            //string userID = HttpContext.Request.Cookies["userID"];
+            return _context.Employees.Where(e=>e.Identitynumber==userLogedNationalIDNumber.IdentityNumber) != null ?
+                          View(new Employee()) :
+                          Problem("Entity set 'Teat2Context.employees'  is null.");
+
         }
 
         // GET: Employees

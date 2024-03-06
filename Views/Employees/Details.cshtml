@@ -199,17 +199,21 @@
     @* <input type="submit" value="ارسال" onclick="n('@Model.IdEmployees')" class="btn btn-primary"style=" background: green;"/> *@
     |
     @{
-        if (Model.Enterd != true && Model.Audited != true && Model.Approved != true)
+        if (User.IsInRole("Employee"))
         {
-                                            <a asp-action="Index"><i class="bx bx-arrow-back"></i>العودة لقائمة الموظفين</a>
+            <a asp-action="Index">العودة لقائمة الموظفين</a>
         }
-        else if (Model.Enterd == true && Model.Audited != true && Model.Approved != true)
+        else if (User.IsInRole("المدقق"))
         {
-                                            <a asp-action="AuditIndex">العودة لقائمة الموظفين</a>
+            <a asp-action="AuditIndex">العودة لقائمة الموظفين</a>
         }
+        else if (User.IsInRole("مدخل عادي"))
+        {
+           <a asp-action="singleIndex">العودة الى قائمة الموظفين</a> 
+        }        
         else
         {
-                                            <a asp-action="ApproveIndex">العودة لقائمة الموظفين</a>
+            <a asp-action="ApproveIndex">العودة لقائمة الموظفين</a>
         }
     }
 </div>

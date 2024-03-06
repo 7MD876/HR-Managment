@@ -11,6 +11,8 @@ public partial class Unit
 
     public int UnitNumber { get; set; }
 
+    public virtual ICollection<AspNetUser> AspNetUsers { get; set; } = new List<AspNetUser>();
+
     public virtual ICollection<ETransfer> ETransferFromUnitNavigations { get; set; } = new List<ETransfer>();
 
     public virtual ICollection<ETransfer> ETransferToUnitNavigations { get; set; } = new List<ETransfer>();
