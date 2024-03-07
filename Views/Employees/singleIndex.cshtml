@@ -4,7 +4,7 @@
 @{
 }
 @using LearningManagementSystem.Enums
-@Model LearningManagementSystem.Data.Employee
+@model LearningManagementSystem.Data.Employee
 
 @{
     ViewData["Title"] = "Index";
@@ -15,37 +15,44 @@
 <link href="~/css/jquery.datatables.min.css" rel="stylesheet" />
 
 
-<p>
-    <a asp-action="Create">إضافة بياناتي</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                حالة الطلب
-            </th>
-            <th>
-                الاسم
-            </th>
-            <th>
-                رقم الهوية
-            </th>
-            <th>
-                الرقم الوظيفي
-            </th>
-            <th>
-                الجنس
-            </th>
-            <th>
-                مسمى الوظيفة
-            </th>
-            <th>
-                الرتبة
-            </th>
-            <th>العمليات</th>
-        </tr>
-    </thead>
-    <tbody>
+
+@if (Model == null)
+{
+    <p>
+        <a asp-action="CreateSingle">إضافة بياناتي</a>
+    </p>
+    <a>لا توجد بيانات مدخلة</a>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    حالة الطلب
+                </th>
+                <th>
+                    الاسم
+                </th>
+                <th>
+                    رقم الهوية
+                </th>
+                <th>
+                    الرقم الوظيفي
+                </th>
+                <th>
+                    الجنس
+                </th>
+                <th>
+                    مسمى الوظيفة
+                </th>
+                <th>
+                    الرتبة
+                </th>
+                <th>العمليات</th>
+            </tr>
+        </thead>
+        <tbody>
             <tr>
                 <td>
                     @{
@@ -124,5 +131,7 @@
 
                 </td>
             </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+}
+

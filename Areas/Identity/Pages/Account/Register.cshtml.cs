@@ -73,8 +73,8 @@ namespace LearningManagementSystem.Areas.Identity.Pages.Account
             [Display(Name = "رقم الهوية")]
             public int identityNamber { get; set; }
             public int? UnitId { get; set; }
-            public string Username { get; set; }
-            
+            [Required]
+            public string Username { get; set; }            
         }
 
         public async Task OnGetAsync(string returnUrl = null)

@@ -33,7 +33,7 @@ namespace LearningManagementSystem.Controllers
             //string userName = HttpContext.Request.Cookies["userName"];
             //string userID = HttpContext.Request.Cookies["userID"];
             return _context.Employees.Where(e=>e.Identitynumber==userLogedNationalIDNumber.IdentityNumber) != null ?
-                          View(new Employee()) :
+                          View(await _context.Employees.Where(e => e.Identitynumber == userLogedNationalIDNumber.IdentityNumber).FirstOrDefaultAsync()) :
                           Problem("Entity set 'Teat2Context.employees'  is null.");
 
         }
@@ -121,6 +121,39 @@ namespace LearningManagementSystem.Controllers
                 return NotFound();
             }
 
+            return View(employee);
+        }
+        // GET: Employees/Create
+        public IActionResult CreateSingle()
+        {
+            ViewData["JopType"] = new SelectList(_context.Jops, "Idjops", "JopName");
+            ViewData["RankId"] = new SelectList(_context.Ranks, "Idrank", "Rankname");
+            ViewData["UnitsId"] = new SelectList(_context.Units, "UnitId", "UnitName");
+            return View();
+        }
+
+        // POST: Employees/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateSingle(Employee employee)
+        {
+            var userLogedNationalIDNumber = await _context.AspNetUsers.Where(s => s.UserName == User.Identity.Name).FirstOrDefaultAsync();
+            //يتم تعديل المسمى وتصنيف الوظيفة بعد الربط مع النظام الداخلي
+            employee.Name = userLogedNationalIDNumber.UserName ?? "";
+            employee.Identitynumber = userLogedNationalIDNumber.IdentityNumber ?? 0;
+            employee.UnitId = userLogedNationalIDNumber.UnitId ?? 0;
+            if (ModelState.IsValid)
+            {
+                _context.Add(employee);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(singleIndex));
+            }
+            ModelState.AddModelError("", " رقم الهوية الوطنية مضافة مسبقاً");
+            ViewData["JopType"] = new SelectList(_context.Jops, "Idjops", "JopName", employee.JopType);
+            ViewData["RankId"] = new SelectList(_context.Ranks, "Idrank", "Rankname", employee.RankId);
+            ViewData["UnitsId"] = new SelectList(_context.Units, "UnitId", "UnitName");
             return View(employee);
         }
         // GET: Employees/Create
